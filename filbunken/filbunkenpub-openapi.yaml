@@ -1,0 +1,234 @@
+# OpenAPI (3.0.3) specification for the filbunken API
+---
+openapi: 3.0.3
+info:
+   title: Filbunkenpub
+   version: 1.0.0
+   license:
+      name: CC0
+      url: https://creativecommons.org/publicdomain/zero/1.0/
+   description: >
+      ## SVENSKA
+
+      En lättviktig variant av Filbunken som endast med
+      hämtning av filer och minatyrer.
+
+      ## ENGLISH
+      
+      A light-weight version of Filbunken which only allows for
+      fetching files and thumbnails.
+
+servers:
+   - url: https://etjanst.sjv.se/filbunkenpub
+     description: PROD
+
+tags:
+   - name: Fetch
+     description: Retrieve files and metadata
+   - name: API Meta
+     description: Metadata describing the API
+
+components:
+   schemas:
+      Error:
+         type: object
+         required: ["detail"]
+         properties:
+            id:
+               type: string
+               description: Unique identifier for the error for e.g. logging or support tickets.
+            code:
+               type: integer
+               description: An application specific error code.
+            detail:
+               type: string
+               description: A human (or developer) readble description of the error.
+            source:
+               type: object
+               properties:
+                  parameter:
+                     type: string
+                     description: The name of a parameter identified as a source of the error.
+                  pointer:
+                     type: string
+                     description: >
+                        A JSON pointer ([RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901)) to an
+                        attribute identified as a source of the error.
+
+         example: >
+            {
+               "id":"3d73e435-e01d-41fa-9cd3-845bc4a464f0",
+               "code":1337,
+               "detail":"Possible error between keyboard and chair.",
+               "source":{
+                  "pointer":"#/you"
+               }
+            }
+
+      APIMeta:
+         type: object
+         properties:
+            name:
+               type: string
+               description: Canonical API name.
+            version:
+               type: string
+               description: The detailed version <major>.<minor>.<patch> of the API.
+            released:
+               type: string
+               format: date
+            specification:
+               type: string
+               format: url
+            documentation:
+               type: string
+               format: url
+         example: >
+            {
+               "name":"Lagringsyta-API",
+               "version":"1.0.0",
+               "released":"2022-04-01",
+               "specification":"/documentation/filbunken.yaml"
+               "documentation":"/documentation/index.html"
+            }
+
+   parameters:
+      fileId:
+         name: fileId
+         description: The id of the file.
+         in: path
+         required: true
+         schema:
+            type: string
+
+   responses:
+      InvalidFileId:
+         description: The fileId does not match a valid id.
+         content:
+            application/json:
+               schema:
+                  $ref: '#/components/schemas/Error'
+
+      DefaultError:
+         description: The server encountered an error and could not fulfil the request.
+
+paths:
+   /:
+      get:
+         operationId: APIMeta
+         summary: API description
+         description: >
+            API metadata decscribing the API and detailing metadata about it.
+         tags:
+            - API Meta
+         responses:
+            '200':
+               description: A human- or machine-readable API description.
+               content:
+                  text/html:
+                     schema:
+                        type: string
+                        example: |
+                           <!doctype html>
+                           <html><head><title>API Info</title>
+                           <script type=text/javascript>
+                           async function init() {
+                              const data=await (await fetch("",{headers:{Accept:"application/json"}})).json();
+                              document.body.innerHTML=`<dl>${Object.keys(data).reduce((acc,v)=>acc+`<dt>${v}<dd>${data[v]}`,"")}</dl>`;
+                           }
+                           window.addEventListener("load",init,{once:true});
+                           </script></head><body></body></html>
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/APIMeta'
+            '415':   # Unsupported media type (RFC 7231, section 6.5.13 )
+               description: The accept header was present but did not contain any supported content types.
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/Error'
+
+   /files/{fileId}:
+      parameters:
+         - $ref: '#/components/parameters/fileId'
+
+      head:
+         operationId: headFile
+         summary: Support HTTP meta-data for a resource.
+         description: Can be used to return headers, but no body for a file.
+         tags:
+            - Fetch
+         responses:
+            '200':
+               description: The requested file with appropriate headers.
+            '404':   # No such fileId
+               $ref: '#/components/responses/InvalidFileId'
+            default:
+               $ref: '#/components/responses/DefaultError'
+
+      get:
+         operationId: getFile
+         summary: Fetch a file given its id.
+         description: >
+            Using the id of a file, download it. A HEAD request can be used for reading the
+            Content-Length, Content-Type, and Content-Disposition headers.
+
+            **Implementation** **note**: This endpoint *must* support range requests.
+         tags:
+            - Fetch
+         responses:
+            '200':
+               description: The requested file with appropriate headers.
+               content:
+                  '*/*':
+                     schema:
+                        type: string
+                        format: binary
+            '206': # Partial Content, this response code is defined in RFC 7233.
+               description: >
+                  A part of the file as indicated by the Range header (only byte-ranges supported)
+                  [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233) in the request.
+               content:
+                  '*/*':
+                     schema:
+                        type: string
+                        format: binary
+            '404':   # No such fileId
+               $ref: '#/components/responses/InvalidFileId'
+            '415':   # Unsupported media type (RFC 7231, section 6.5.13 )
+               description: The client supplied an accept header which does not match the mime-type of the file.
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/Error'
+            default:
+               $ref: '#/components/responses/DefaultError'
+
+   /files/{fileId}/thumbnail:
+      parameters:
+         - $ref: '#/components/parameters/fileId'
+      get:
+         operationId: getThumbnail
+         summary: Fetch a thumbnail for a file.
+         description: >
+            Using the id of a file, fetch a thumbnail for it. Currently, only image/jpeg
+            is supported, but future versions might expose other media types as well. The
+            size of the thumbnail is (currently) 256 pixels in the largest dimension and
+            is compressed to a low quality to reduce the filesize.
+         tags:
+            - Fetch
+         responses:
+            '200':
+               description: A thumbnail image representing the file.
+               content:
+                  image/*:
+                     schema:
+                        type: string
+                        format: binary
+            '404':   # No such fileId
+               $ref: '#/components/responses/InvalidFileId'
+            default:
+               $ref: '#/components/responses/DefaultError'
+
+#
+# vi: set ts=3 cc=120:

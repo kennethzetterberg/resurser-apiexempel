@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Filbunken-pub exempelkod för API</title>
+		<style type=text/css>
+			p {
+				max-width: 78ch;
+			}
+		</style>
+		<script type=module>
+			const q=(x)=>document.querySelector(x);
+
+			import FilbunkenpubAPI from "./filbunkenpub-api.js";
+
+			const API=new FilbunkenpubAPI();
+			const testId="1569b8e8-075e-48a3-a873-b28cacc7aa42";
+
+			function init() {
+				q("#getThumb").addEventListener("click",async ()=>{
+					q("#preview").src=API.thumbURL(testId);
+				},{});
+
+				q("#getFile").addEventListener("click",()=>{
+					let link=document.createElement("A");
+					link.setAttribute("href",API.fileURL(testId));
+					link.setAttribute("target","_BLANK");
+					link.click();
+				},{});
+			}
+
+			window.addEventListener("load",init,{once:true});
+		</script>
+	</head>
+	<body>
+		<h1>Exempelsida för Filbunken-pub</h1>
+		<p>Den här sidan demonstrerar anrop till Filbunken-pub API:et. Filbunken-pub
+		är ett system som levererar filer och förhandsvisningar i form av miniatyrer,
+		främst för bilder som samlats in i samband med <a href="https://jordbruksverket.se/stod/jordbruk-tradgard-och-rennaring/sam-ansokan-och-allmant-om-jordbrukarstoden/uppfoljning-av-jordbruksmark">markuppföljning</a> eller
+		ajourhållning.</p>
+
+		<p>Detta är ett trivialt API som endast har tre anrop — två av vilka fungerar.</p>
+		<ul>
+			<li>Hämta versionsinfo (detta anrop fungerar inte)
+			<li>Hämta miniatyr (förhandsvisning / thumbnail)
+			<li>Hämta fil
+		</ul>
+		<p>Filen som används i exemplet har id <code>1569b8e8-075e-48a3-a873-b28cacc7aa42</code>.
+		<div>
+			<button id=getThumb>Hämta miniatyr</button>
+			<button id=getFile>Hämta fil</button>
+		</div>
+		<hr>
+		<img id=preview src="">
+	</body>
+</html>

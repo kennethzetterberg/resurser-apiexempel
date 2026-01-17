@@ -1,0 +1,67 @@
+# Exempel publiccode.yml fil men {platshållare} för att fylla i om man vill.
+
+publiccodeYmlVersion: '0.5'
+
+name: '{API} Example code'
+url: 'https://codeberg.org/jordbruksverket/{API}example'
+softwareVersion: '1.0'
+releaseDate: '2025-12-24'
+
+developmentStatus: stable
+
+softwareType: standalone/web
+platforms:
+  - web
+categories:
+  - application-development
+
+
+maintenance:
+  type: internal
+  contacts:
+    - name: Test Testberg
+      email: test.testberg@jordbruksverket.se
+      affiliation: Jordbruksverket
+
+legal:
+  license: LGPL-3.0-or-later
+  repoOwner: Swedish Board of Agriculture
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - sv
+
+description:
+  en:
+    localisedName: 'Exempelkod för {API}'
+    genericName: API Examplecode for {API}
+    apiDocumentation: 'https://codeberg.org/jordbruksverket/{API}example/doc'
+    shortDescription: >-
+      Example code for the {API} API provided by the Swedish Board of
+      Agriculture
+    longDescription: |
+      This codebase is an example of how to use the {API} API supplied by the
+      Swedish Board of Agriculture. This API is used for the purpose of
+      {PURPOSE} and is primarily targeted at {USERGROUP}.
+
+
+      The API has functions related to the following use cases:
+
+
+      - {USECASE 1}
+
+      - ...
+
+      - {USECASE N}
+
+
+      The primary language is Javascript and the example can be run by pointing
+      a web-browser at the `apiexample.html` file. No build-step is needed, but
+      support for javascript modules is required for the example to function. 
+
+
+      The primary development of the example code is done in-house since it is
+      considered part of the development of the API it exemplifies, but patches
+      and bug-reports are welcome.
+
