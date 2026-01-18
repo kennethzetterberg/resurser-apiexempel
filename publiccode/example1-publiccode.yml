@@ -31,12 +31,14 @@ localisation:
   localisationReady: false
   availableLanguages:
     - sv
+    - en
 
 description:
   en:
     localisedName: 'Exempelkod för {API}'
     genericName: API Examplecode for {API}
     apiDocumentation: 'https://codeberg.org/jordbruksverket/{API}example/doc'
+    features: ["API","example"]
     shortDescription: >-
       Example code for the {API} API provided by the Swedish Board of
       Agriculture

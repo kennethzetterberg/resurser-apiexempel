@@ -1,0 +1,50 @@
+
+publiccodeYmlVersion: "0.5"
+
+name: "FilbunkenpubAPI-example"
+url: "https://codeberg.org/jordbruksverket/filbunkenpubapi-example"
+softwareVersion: "1.0"
+releaseDate: "2025-01-18"
+
+platforms: ["web"]
+developmentStatus: "stable"
+softwareType: "standalone/web"
+
+organisation:
+  name: "The Swedish Board of Agriculture"
+  uri: "https://jordbruksverket.se"
+
+description:
+  en:
+    features: ["API","example"]
+    shortDescription: "Example code illustrating the use of the Filbunkenpub API."
+    longDescription: |
+      This code is an example of how to use the Filbunkenpub API
+      published by the Swedish Board of Agriculture. It is an HTTP/REST API used to
+      deliver files and previews (thumbnails) to an application or user given an identifier.
+      
+      The identifier is currently provided out-of-band as no functionality to discover
+      files is available. In addition to the data of a file, metadata in the form of
+      a filename is also included as an HTTP header (`Content-Disposition`).
+      
+      The API is intended to be usable both in a machine-to-machine setting and
+      from a web-page. The primary usage is expected to be for image files, and
+      for that reason every file has an associated preview/thumbnail in order to
+      facilitate a good user experience.
+
+
+legal:
+  license: "EUPL-1.2"
+
+localisation:
+  localisationReady: false
+  availableLanguages: ["en"]
+
+maintenance:
+  type: "internal"
+  contacts:
+    - name: "Peter Bengtsson"
+      email: "peter.bengtsson@jordbruksverket.se"
+      affiliation: "Swedish Board of Agriculture"
+
+
