@@ -1,6 +1,6 @@
 # Dokumentationsexempel
 
-Detta är ett exempel på ett API-exempel
+Detta är ett exempel på ett API-exempel (OBS: Denna text är på svenska, men själva exemplet är på engelska)
 
 ## Example code for the Filbunkenpub API
 
@@ -16,6 +16,8 @@ In addition to the data delivered by the API, metadata in the form of a filename
 * filbunkenpub-exempel.html : A page demonstrating usage of the API
 * filbunkenpub-api.js : A simple API wrapper used by filbunkenpub-exempel.html
 * filbunkenpub-openapi.yaml : An OpenAPI specification for the API.
+
+The example page can be viewed directly [here](https://jordbruksverket.codeberg.page/resurser-apiexempel/@main/filbunken/filbunken-exempel.html)
 
 ### Contact
 
