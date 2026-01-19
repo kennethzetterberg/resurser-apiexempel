@@ -21,7 +21,7 @@ class FilbunkenpubAPI {
 	}
 
 	// Returns the version info as a promise for a json object. (This does not work since the API does not implement it)
-	version() 
+	version() {
 		return fetch(`${BASEURL}/`).then(
 			(res) => res.json()
 		);
