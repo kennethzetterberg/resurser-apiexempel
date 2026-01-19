@@ -1,6 +1,11 @@
 # Dokumentationsexempel
 
-Detta är ett exempel på ett API-exempel (OBS: Denna text är på svenska, men själva exemplet är på engelska)
+Detta är ett exempel på ett API-exempel. Licensen för allt är CC0 som angivet i
+top-nivå README.md filen och licensfilerna i exemplet är exempel på licenser. OpenAPI
+specifikationen har en CC0 licens som angivet i filen, övriga är EUPL-1.2 licensierade
+(som exempel).
+
+(OBS: Denna text är på svenska, men själva exemplet är på engelska)
 
 ## Example code for the Filbunkenpub API
 
