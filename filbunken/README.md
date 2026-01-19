@@ -17,6 +17,8 @@ In addition to the data delivered by the API, metadata in the form of a filename
 * filbunkenpub-api.js : A simple API wrapper used by filbunkenpub-exempel.html
 * filbunkenpub-openapi.yaml : An OpenAPI specification for the API.
 
+### Live example
+
 The example page can be viewed directly [here](https://jordbruksverket.codeberg.page/resurser-apiexempel/@main/filbunken/filbunken-exempel.html)
 
 ### Contact
